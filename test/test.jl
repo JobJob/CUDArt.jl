@@ -1,6 +1,15 @@
 import CUDArt
 using Base.Test
 
+# Notes:
+#
+# 2014-09-02 (nwh): Test appears to stall on last section.  I only waited 5
+#   minutes.  May need more patience. (Fedora 20, Tesla K20c & GTX 680 in
+#   system)
+#
+
+const print_status = false
+
 ##########################
 # Low-level memory tests #
 ##########################
@@ -35,7 +44,7 @@ if length(devlist) > 1
     CUDArt.free(p2)
     CUDArt.free(p1a)
     CUDArt.device_reset(devlist[1])
-    CUDArt.device_reset(devlist[2])    
+    CUDArt.device_reset(devlist[2])
 end
 
 gc()
@@ -58,6 +67,10 @@ CUDArt.free(g)
 CUDArt.device_reset(0)
 
 gc()
+
+if print_status
+    println("end \"Low-level memory tests\".")
+end
 
 ##############################################
 # Test CUDA array types and kernel execution #
@@ -182,6 +195,10 @@ end
 
 gc()  # check for finalizer errors
 
+if print_status
+    println("end \"Test CUDA array types and kernel execution\".")
+end
+
 #########################################
 # Multiple devices, streams, and wait() #
 #########################################
@@ -219,4 +236,8 @@ if CUDArt.devcount() > 1
         @test results[end][2]-results[1][1] < 1.1*sleeptime*iceil(length(results)/length(devlist))
         nothing
     end
+end
+
+if print_status
+    println("end \"Multiple devices, streams, and wait()\".")
 end
