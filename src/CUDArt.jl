@@ -1,13 +1,16 @@
 module CUDArt
 
 export
+    # pointer symbols
+    CudaPtr, convert, rawpointer, CUDA_NULL, integer, unsigned,
+    eltype, ==, -, +, zero, one,
+    # other symbols
     device, devices, device_reset, attribute, capability,
     driver_version, runtime_version,
     CuModule, CuFunction, unload,
     AbstractCudaArray, CudaArray, CudaPitchedArray, HostArray,
-    AbstractCudaArray, CudaArray, CudaPitchedArray,
     to_host, pitchel, pitchbytes,
-#     dim3, configure_call, 
+#     dim3, configure_call,
     launch, device_synchronize, synchronize,
     Stream, null_stream, cudasleep,
     destroy, free, cudafinalizer
@@ -33,6 +36,7 @@ include("device.jl")
 include("stream.jl")
 #include("event.jl")
 include("module.jl")
+include("pointer.jl")
 include("arrays.jl")
 include("execute.jl")
 
