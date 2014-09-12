@@ -8,7 +8,7 @@ export
     AbstractCudaArray, AbstractCudaVector, AbstractCudaMatrix,
     CudaArray, CudaVector, CudaMatrix, CudaVecOrMat,
     CudaPitchedArray, HostArray,
-    to_host, similar,
+    to_host, similar, copy,
     # other symbols
     device, devices, device_reset, attribute, capability,
     driver_version, runtime_version,
@@ -19,7 +19,7 @@ export
     destroy, free, cudafinalizer
 
 import Base: length, size, ndims, eltype, similar, pointer, stride,
-    convert, reinterpret, show,
+    convert, reinterpret, show, copy,
     copy!, get!, fill!, wait
 
 # Prepare the CUDA runtime API bindings
