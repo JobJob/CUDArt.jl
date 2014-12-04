@@ -1,13 +1,19 @@
-all: libwrapcuda.so utils.ptx
+ifeq ($(shell uname),Darwin)
+	libfile := libwrapcuda.dylib
+	libflag := dylib
+else
+	libfile := libwrapcuda.so
+	libflag := fPIC
+endif
 
-libwrapcuda.so: wrapcuda.c
-	nvcc --shared --compiler-options=-fPIC \
-		-gencode=arch=compute_30,code=sm_30 \
-		--linker-options=-fPIC wrapcuda.c -o libwrapcuda.so
+all: $(libfile) utils.ptx
+
+$(libfile): wrapcuda.c
+	nvcc --shared --compiler-options=-fPIC --linker-options=-$(libflag) wrapcuda.c -o $(libfile)
 
 utils.ptx: utils.cu
-	nvcc -ptx -gencode=arch=compute_30,code=sm_30 utils.cu
+	nvcc -ptx -gencode=arch=compute_20,code=sm_20 utils.cu
 
 .PHONY: clean
 clean:
-	$(RM) libwrapcuda.so utils.ptx
+	$(RM) $(libfile) utils.ptx
